@@ -1,0 +1,132 @@
+<div class="main">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1>MEDISMARTS</h1>
+    </div>
+  </div>
+  <div class="container">
+
+    <div class="row">
+      <div class="col-lg-2">
+        <button (click)="open(mymodal)" class="btn btn-primary">Add New Student</button>
+      </div>
+      <div class="col-lg-10">
+        <h1>Students Listing</h1>
+        <div *ngIf="!loadingComplete">
+          <img src="assets/img_g.gif" />
+        </div>
+        <div *ngIf="loadingComplete">
+          <table class="table table-bordered">
+
+            <thead>
+              <tr>
+              <th>S/N</th><th>FullName</th><th>Email Address</th><th>Action</th>
+            </tr>
+            </thead>
+
+          <tbody *ngFor="let k of students;index as i">
+            <tr>
+              <td>{{i}}</td>
+              <td>{{k.firstName}}</td>
+              <td>{{k.emailAddress}}</td>
+              <td>
+                <a routerLink="/view/{{k.id}}" class="btn btn-info">View</a> &nbsp;
+                <span style="color:green;font-weight:bold" *ngIf="deleting" >DELETING....</span>
+                <a class="btn btn-danger" *ngIf="!deleting" (click)="deleteStudent($event, k.id)">Delete</a> &nbsp;
+                <button type="button" class="btn btn-warning">Update</button>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #mymodal let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Add NEw Student</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">×</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="registerForm">
+        <table class="table">
+          <tr>
+            <td>firstName</td>
+            <td><input name="firstName" (keyup)="fillFormValue($event)" type="text" formControlName="firstName" class="form-control" /></td>
+            <td>
+            <span style="color:red;" *ngIf="firstName.touched && !firstName.valid">
+              firstName is required
+            </span></td>
+          </tr>
+          <tr>
+            <td>lastName</td>
+            <td><input name="lastName" (keyup)="fillFormValue($event)" type="text" formControlName="lastName" class="form-control" /></td>
+            <td><span style="color:red;" *ngIf="lastName.touched && !lastName.valid">
+              lastName is required
+            </span></td>
+          </tr>
+          <tr>
+            <td>emailAddress</td>
+            <td><input name="emailAddress" (keyup)="fillFormValue($event)" type="datetime" formControlName="emailAddress" class="form-control" /></td>
+            <td>
+            <span style="color:red;" *ngIf="email.touched && !email.valid">
+              emailAddress is required
+            </span></td>
+          </tr>
+          <tr>
+            <td>date Of Birth</td>
+            <td><input name="dateOfBirth" (keyup)="fillFormValue($event)" type="datetime" formControlName="dateOfBirth" class="form-control" /></td>
+            <td>
+            <span style="color:red;" *ngIf="dob.touched && !dob.valid">
+              date Of Birth is required
+            </span></td>
+          </tr>
+          <tr>
+            <td>Select Gender</td>
+            <td><select name="gender" (change)="fillFormValue($event)"  formControlName="gender" class="form-control">
+              <option selected>Please Select Gender</option>
+              <option value="m">MALE</option>
+              <option value="f">FEMALE</option>
+            </select></td>
+            <td>
+            <span style="color:red;" *ngIf="gender.touched && !gender.valid">
+              date Of Birth is required
+            </span></td>
+          </tr>
+          <tr>
+            <td>state</td>
+            <td><input name="state" (keyup)="fillFormValue($event)" type="text" formControlName="state" class="form-control" /></td>
+
+          </tr>
+          <tr>
+            <td>Guardian Name</td>
+            <td><input name="guardianName" (keyup)="fillFormValue($event)" type="text" formControlName="guardianName" class="form-control" /></td>
+
+          </tr>
+          <tr>
+            <td>department</td>
+            <td><input name="department" (keyup)="fillFormValue($event)" type="text" formControlName="department" class="form-control" /></td>
+
+          </tr>
+          <tr>
+            <td>level</td>
+            <td><input name="level" (keyup)="fillFormValue($event)" type="datetime" formControlName="level" class="form-control" /></td>
+
+          </tr>
+        </table>
+      </form>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark">CLEAR FORM</button>
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">CANCEL</button>
+      <button  type="button" class="btn btn-outline-dark" (click)="registerNewStudent()" *ngIf="isFormValid  && !processingForm">REGISTER</button>
+      <span style="color:green" *ngIf="processingForm">{{processingFormText}}</span>
+    </div>
+  </ng-template>
+</div>
+
+
